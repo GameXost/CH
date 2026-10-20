@@ -1,5 +1,4 @@
 from typing import Iterable
-
 import numpy as np
 
 
@@ -7,11 +6,15 @@ DEFAULT_ZERO_TOLERANCE = 1e-12
 
 
 class NumericalMethodError(ValueError):
-    """Ошибка входных данных или условий применимости метода."""
+    pass
 
 
 class SingularMatrixError(NumericalMethodError):
-    """Матрица вырождена с учётом выбранного порога."""
+    pass
+
+
+class ConvergenceError(NumericalMethodError):
+    pass
 
 
 def as_square_matrix(values: Iterable[Iterable[float]], name: str = "A") -> np.ndarray:
@@ -40,17 +43,25 @@ def vector_infinity_norm(vector: np.ndarray) -> float:
     return max(abs(value) for value in vector)
 
 
+def matrix_row_sum_norm(matrix: np.ndarray) -> float:
+    return max(sum(abs(float(value)) for value in row) for row in matrix)
+
+
 def max_abs_entry(matrix: np.ndarray) -> float:
     if matrix.size == 0:
         return 0.0
     return max(abs(float(value)) for value in matrix.flat)
 
 
-def format_number(value: float, precision: int = 6) -> str:
-    number = float(value)
-    if abs(number) < 10 ** (-precision):
-        number = 0.0
-    return f"{number:.{precision}g}"
+def format_number(value: complex | float, precision: int = 6) -> str:
+    value = complex(value)
+    threshold = 10 ** (-precision)
+    real = 0.0 if abs(value.real) < threshold else value.real
+    imaginary = 0.0 if abs(value.imag) < threshold else value.imag
+    if imaginary == 0.0:
+        return f"{real:.{precision}g}"
+    sign = "+" if imaginary > 0 else "-"
+    return f"{real:.{precision}g}{sign}{abs(imaginary):.{precision}g}i"
 
 
 def format_vector(vector: np.ndarray, precision: int = 6) -> str:
@@ -73,4 +84,3 @@ def print_named_matrix(name: str, matrix: np.ndarray, precision: int = 6) -> Non
 
 def print_named_vector(name: str, vector: np.ndarray, precision: int = 6) -> None:
     print(f"{name} = {format_vector(vector, precision)}")
-
