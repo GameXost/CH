@@ -1,4 +1,4 @@
-# Лаба 1
+# Численные методы: лабораторные 1 и 2
 
 ```powershell
 py -m venv .venv
@@ -15,4 +15,12 @@ py -m venv .venv
 .\.venv\Scripts\python.exe main.py data\qr.json --lab 1.5
 .\.venv\Scripts\python.exe main.py data\qr_complex_example.json --lab 1.5
 ```
-Входные данные через json 
+Входные данные через json.
+
+Лаба 2 (вариант 8)
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install -r lab2\requirements.txt
+.\.venv\Scripts\python.exe main.py lab2\data\nonlinear_equation.json --lab 2.1
+.\.venv\Scripts\python.exe main.py lab2\data\nonlinear_system.json --lab 2.2
+```

@@ -3,6 +3,7 @@ import sys
 from pathlib import Path
 import numpy as np
 from chm.common import (
+    DEFAULT_MAX_ITERATIONS,
     NumericalMethodError,
     as_square_matrix,
     as_vector,
@@ -79,7 +80,7 @@ def run_iterative(path: str | Path, precision: int = 6) -> None:
     A = as_square_matrix(require(data, "matrix"))
     b = as_vector(require(data, "rhs"), A.shape[0])
     epsilon = require(data, "epsilon")
-    max_iterations = data.get("max_iterations", 10_000)
+    max_iterations = data.get("max_iterations", DEFAULT_MAX_ITERATIONS)
 
     equivalent = build_equivalent_system(A, b)
     simple = simple_iterations(equivalent, epsilon, max_iterations)
@@ -144,7 +145,7 @@ def run_qr(path: str | Path, precision: int = 6) -> None:
     data = read_json(path)
     A = as_square_matrix(require(data, "matrix"))
     epsilon = require(data, "epsilon")
-    max_iterations = data.get("max_iterations", 10_000)
+    max_iterations = data.get("max_iterations", DEFAULT_MAX_ITERATIONS)
     decomposition = qr_decomposition(A)
     result = qr_eigenvalues(A, epsilon, max_iterations)
     Q, R = decomposition.Q, decomposition.R
@@ -168,11 +169,11 @@ def run_qr(path: str | Path, precision: int = 6) -> None:
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="Лабораторная работа 1: LU, прогонка, итерации, Зейдель, вращения Якоби и QR"
+        description="Лабораторные работы 1 и 2: линейные и нелинейные уравнения"
     )
     parser.add_argument("input_file", help="путь к JSON-файлу с входными данными")
     parser.add_argument(
-        "--lab", choices=("1.1", "1.2", "1.3", "1.4", "1.5"), default="1.1", help="номер задания"
+        "--lab", choices=("1.1", "1.2", "1.3", "1.4", "1.5", "2.1", "2.2"), default="1.1", help="номер задания"
     )
     parser.add_argument("--precision", type=int, default=6, help="число значащих цифр")
     return parser
@@ -181,7 +182,10 @@ def build_parser() -> argparse.ArgumentParser:
 def main() -> int:
     arguments = build_parser().parse_args()
     try:
-        if arguments.lab == "1.2":
+        if arguments.lab in ("2.1", "2.2"):
+            from lab2.nonlinear_output import run_nonlinear
+            run_nonlinear(arguments.input_file, arguments.lab, arguments.precision)
+        elif arguments.lab == "1.2":
             run_tridiagonal(arguments.input_file, arguments.precision)
         elif arguments.lab == "1.3":
             run_iterative(arguments.input_file, arguments.precision)

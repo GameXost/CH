@@ -3,6 +3,7 @@ import numpy as np
 
 
 DEFAULT_ZERO_TOLERANCE = 1e-12
+DEFAULT_MAX_ITERATIONS = 10_000
 
 
 class NumericalMethodError(ValueError):
