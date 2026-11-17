@@ -1,0 +1,9 @@
+{
+  "variant": 8,
+  "function": "1/(x**2+4)",
+  "antiderivative": "atan(x/2)/2",
+  "a": -2.0,
+  "b": 2.0,
+  "h1": 1.0,
+  "h2": 0.5
+}

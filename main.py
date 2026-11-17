@@ -169,11 +169,11 @@ def run_qr(path: str | Path, precision: int = 6) -> None:
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="Лабораторные работы 1 и 2: линейные и нелинейные уравнения"
+        description="Лабораторные работы 1–3 по численным методам"
     )
     parser.add_argument("input_file", help="путь к JSON-файлу с входными данными")
     parser.add_argument(
-        "--lab", choices=("1.1", "1.2", "1.3", "1.4", "1.5", "2.1", "2.2"), default="1.1", help="номер задания"
+        "--lab", choices=("1.1", "1.2", "1.3", "1.4", "1.5", "2.1", "2.2", "3.1", "3.2", "3.3", "3.4", "3.5"), default="1.1", help="номер задания"
     )
     parser.add_argument("--precision", type=int, default=6, help="число значащих цифр")
     return parser
@@ -181,8 +181,14 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main() -> int:
     arguments = build_parser().parse_args()
+    if arguments.precision < 1:
+        print("Ошибка: --precision должен быть положительным", file=sys.stderr)
+        return 1
     try:
-        if arguments.lab in ("2.1", "2.2"):
+        if arguments.lab.startswith("3."):
+            from lab3.output import run_lab3
+            run_lab3(arguments.input_file, arguments.lab, arguments.precision)
+        elif arguments.lab in ("2.1", "2.2"):
             from lab2.nonlinear_output import run_nonlinear
             run_nonlinear(arguments.input_file, arguments.lab, arguments.precision)
         elif arguments.lab == "1.2":

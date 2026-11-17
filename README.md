@@ -1,4 +1,4 @@
-# Численные методы: лабораторные 1 и 2
+# Численные методы: лабораторные 1, 2 и 3
 
 ```powershell
 py -m venv .venv
@@ -23,4 +23,15 @@ py -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r lab2\requirements.txt
 .\.venv\Scripts\python.exe main.py lab2\data\nonlinear_equation.json --lab 2.1
 .\.venv\Scripts\python.exe main.py lab2\data\nonlinear_system.json --lab 2.2
+```
+
+Лаба 3 (вариант 8)
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install -r lab3\requirements.txt
+.\.venv\Scripts\python.exe main.py lab3\data\interpolation.json --lab 3.1
+.\.venv\Scripts\python.exe main.py lab3\data\spline.json --lab 3.2
+.\.venv\Scripts\python.exe main.py lab3\data\least_squares.json --lab 3.3
+.\.venv\Scripts\python.exe main.py lab3\data\differentiation.json --lab 3.4
+.\.venv\Scripts\python.exe main.py lab3\data\integration.json --lab 3.5
 ```
